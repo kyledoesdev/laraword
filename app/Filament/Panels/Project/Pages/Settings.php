@@ -11,8 +11,6 @@ class Settings extends EditProfile
 {
     protected static ?string $slug = 'settings';
 
-    protected static ?string $title = 'Account Settings';
-
     public function form(Schema $schema): Schema
     {
         return $schema

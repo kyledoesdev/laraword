@@ -4,7 +4,6 @@ namespace App\Providers\Filament;
 
 use App\Filament\Panels\Project\Pages\Settings;
 use App\Filament\UserMenuActions\ConnectionsPageAction;
-use App\Filament\UserMenuActions\SettingsPageAction;
 use App\Filament\UserMenuActions\ShowNameAction;
 use App\Http\Middleware\System\IsDeveloper;
 use Filament\Http\Middleware\Authenticate;
@@ -36,9 +35,7 @@ class AdminPanelProvider extends PanelProvider
             ->maxContentWidth('full')
             ->discoverResources(in: app_path('Filament/Panels/Admin/Resources'), for: 'App\Filament\Panels\Admin\Resources')
             ->discoverPages(in: app_path('Filament/Panels/Admin/Pages'), for: 'App\Filament\Panels\Admin\Pages')
-            ->pages([])
             ->discoverWidgets(in: app_path('Filament/Panels/Admin/Widgets'), for: 'App\Filament\Panels\Admin\Widgets')
-            ->widgets([])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,
@@ -51,8 +48,6 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->userMenuItems([
-                'profile' => fn () => ShowNameAction::make(),
-                SettingsPageAction::make(),
                 ConnectionsPageAction::make(),
             ])
             ->authMiddleware([

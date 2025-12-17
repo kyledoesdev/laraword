@@ -170,7 +170,7 @@
 
     <div class="wordle-main">
         <div class="wordle-header">
-            <h2 class="wordle-title">Dev Wordle</h2>
+            <h2 class="wordle-title">LaraWord</h2>
             <p class="wordle-subtitle">Guess the PHP/Laravel term</p>
         </div>
 

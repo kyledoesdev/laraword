@@ -29,6 +29,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
         'ip_address',
         'user_agent',
         'user_platform',
+        'user_packet',
         'email_verified_at',
         'remember_token',
         'is_dev',
@@ -45,6 +46,15 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    protected static function boot(): void
+    {
+        parent::boot();
+
+        static::creating(function (self $user) {
+            $user->timezone ??= timezone();
+        });
     }
 
     public function connections()

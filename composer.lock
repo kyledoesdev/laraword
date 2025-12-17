@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "595f1fa31f0aebd8ab77ac839f6fb3a5",
+    "content-hash": "e8e218823e67e526efd62d0db3603c04",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2144,6 +2144,79 @@
                 "source": "https://github.com/kirschbaum-development/eloquent-power-joins/tree/4.2.10"
             },
             "time": "2025-11-13T14:57:49+00:00"
+        },
+        {
+            "name": "kyledoesdev/essentials",
+            "version": "v0.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/kyledoesdev/essentials.git",
+                "reference": "a674ec200bc90ef66253e5fe4aa934674816b5ac"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/kyledoesdev/essentials/zipball/a674ec200bc90ef66253e5fe4aa934674816b5ac",
+                "reference": "a674ec200bc90ef66253e5fe4aa934674816b5ac",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "^12.0",
+                "illuminate/http": "^12.0",
+                "illuminate/support": "^12.0",
+                "php": "^8.4",
+                "spatie/laravel-package-tools": "^1.16"
+            },
+            "require-dev": {
+                "laravel/pint": "^1.14",
+                "nunomaduro/collision": "^8.8",
+                "orchestra/testbench": "^10.0.0",
+                "pestphp/pest": "^4.0",
+                "pestphp/pest-plugin-arch": "^4.0",
+                "pestphp/pest-plugin-laravel": "^4.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "aliases": {
+                        "Essentials": "Kyledoesdev\\Essentials\\Facades\\Essentials"
+                    },
+                    "providers": [
+                        "Kyledoesdev\\Essentials\\EssentialsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Libraries/helpers.php"
+                ],
+                "psr-4": {
+                    "Kyledoesdev\\Essentials\\": "src/",
+                    "Kyledoesdev\\Essentials\\Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kyle Evangelisto",
+                    "email": "kyledoesdev@gmail.com",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Essentials for my Laravel applications.",
+            "homepage": "https://github.com/kyledoesdev/essentials",
+            "keywords": [
+                "essentials",
+                "kyledoesdev",
+                "laravel"
+            ],
+            "support": {
+                "issues": "https://github.com/kyledoesdev/essentials/issues",
+                "source": "https://github.com/kyledoesdev/essentials/tree/v0.0.2"
+            },
+            "time": "2025-09-11T02:50:10+00:00"
         },
         {
             "name": "laravel/framework",

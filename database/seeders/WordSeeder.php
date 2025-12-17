@@ -26,7 +26,7 @@ class WordSeeder extends Seeder
         return [
             // Laravel specific
             'BLADE', 'MODEL', 'ROUTE', 'QUEUE', 'EVENT', 'CACHE', 'FORGE', 'VAPOR',
-            'SCOUT', 'PULSE', 'SPARK', 'ENVOY', 'MIXIN', 'PIPES', 'BINDS',
+            'SCOUT', 'PULSE', 'SPARK', 'ENVOY', 'MIXIN',
             
             // PHP keywords & functions
             'ARRAY', 'CLASS', 'TRAIT', 'CONST', 'FINAL', 'CLONE', 'THROW', 'CATCH',

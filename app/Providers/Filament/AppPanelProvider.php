@@ -4,16 +4,12 @@ namespace App\Providers\Filament;
 
 use Filament\Panel;
 use Filament\PanelProvider;
-use Filament\Pages\Dashboard;
 use Filament\Support\Colors\Color;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Panels\Project\Pages\Settings;
 use Illuminate\Session\Middleware\StartSession;
-use App\Filament\UserMenuActions\ShowNameAction;
 use Illuminate\Cookie\Middleware\EncryptCookies;
 use Filament\Http\Middleware\AuthenticateSession;
-use App\Filament\UserMenuActions\SettingsPageAction;
-use App\Filament\Panels\Project\Widgets\WordleWidget;
 use Illuminate\Routing\Middleware\SubstituteBindings;
 use Illuminate\View\Middleware\ShareErrorsFromSession;
 use App\Filament\UserMenuActions\ConnectionsPageAction;
@@ -39,18 +35,12 @@ class AppPanelProvider extends PanelProvider
                 'primary' => Color::Red,
             ])
             ->maxContentWidth('full')
-            ->discoverResources(in: app_path('Filament/Project/Resources'), for: 'App\Filament\Panels\Project\Resources')
-            ->discoverPages(in: app_path('Filament/Project/Pages'), for: 'App\Filament\Panels\Project\Pages')
-            ->pages([
-                Dashboard::class,
-            ])
-            ->discoverWidgets(in: app_path('Filament/Project/Widgets'), for: 'App\Filament\Panels\Project\Widgets')
-            ->widgets([
-                WordleWidget::class
-            ])
+            ->discoverResources(in: app_path('Filament/Panels/Project/Resources'), for: 'App\Filament\Panels\Project\Resources')
+            ->discoverPages(in: app_path('Filament/Panels//Project/Pages'), for: 'App\Filament\Panels\Project\Pages')
+            ->discoverWidgets(in: app_path('Filament/Panels/Project/Widgets'), for: 'App\Filament\Panels\Project\Widgets')
+            ->topNavigation()
+            ->spa()
             ->userMenuItems([
-                //'profile' => fn () => ShowNameAction::make(),
-                SettingsPageAction::make(),
                 ConnectionsPageAction::make(),
             ])
             ->middleware([
