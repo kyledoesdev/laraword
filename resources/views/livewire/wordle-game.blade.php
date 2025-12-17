@@ -1,8 +1,8 @@
 <div
     x-data="{
-        board: @js($board),
+        board: @js($game->board_state),
         currentRowIndex: @js($currentRowIndex),
-        status: @js($status),
+        status: @js($game->status),
         message: @js($message),
         alreadyPlayed: @js($alreadyPlayed),
         guessesAllowed: @js($guessesAllowed),
@@ -161,6 +161,77 @@
     class="wordle-container"
     wire:ignore.self
 >
+    <!-- Floating Laravel Cubes Background -->
+    <div class="laravel-cubes-bg" aria-hidden="true">
+        @for ($i = 0; $i < 10; $i++)
+            <div class="laravel-cube"></div>
+        @endfor
+    </div>
+
+    <div class="wordle-main">
+        <div class="wordle-header">
+            <h2 class="wordle-title">Dev Wordle</h2>
+            <p class="wordle-subtitle">Guess the PHP/Laravel term</p>
+        </div>
+
+        <template x-if="alreadyPlayed">
+            <div class="already-played-notice">
+                <p>You've already played today! Come back tomorrow for a new word.</p>
+            </div>
+        </template>
+
+        <div class="wordle-game">
+            <template x-for="(row, rowIndex) in board" :key="'row-' + rowIndex">
+                <div 
+                    class="wordle-row"
+                    :class="{ 'invalid': error && rowIndex === currentRowIndex }"
+                >
+                    <template x-for="(tile, tileIndex) in row" :key="'tile-' + rowIndex + '-' + tileIndex">
+                        <div 
+                            class="wordle-tile"
+                            :class="{
+                                'filled': tile.letter && !tile.status,
+                                'correct': tile.status === 'correct',
+                                'present': tile.status === 'present',
+                                'absent': tile.status === 'absent'
+                            }"
+                            x-text="tile.letter.toUpperCase()"
+                        ></div>
+                    </template>
+                </div>
+            </template>
+        </div>
+
+        <div 
+            class="wordle-message"
+            :class="{ 'error': error }"
+            x-text="message"
+        ></div>
+
+        <div class="wordle-keyboard">
+            <template x-for="(letterRow, rowIndex) in letters" :key="'kb-' + rowIndex">
+                <div class="keyboard-row">
+                    <template x-for="key in letterRow" :key="'key-' + key">
+                        <button
+                            type="button"
+                            class="wordle-key"
+                            :class="{
+                                'wide': key === 'Enter' || key === 'Backspace',
+                                'correct': getKeyStatus(key) === 'correct',
+                                'present': getKeyStatus(key) === 'present',
+                                'absent': getKeyStatus(key) === 'absent'
+                            }"
+                            @click="onKeyPress(key)"
+                            :disabled="status !== 'active' || loading"
+                        >
+                            <span x-text="key === 'Backspace' ? '⌫' : (key === 'Enter' ? 'ENTER' : key)"></span>
+                        </button>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </div>
+
     <style>
         .wordle-container {
             --correct: #22c55e;
@@ -448,83 +519,184 @@
             90% { opacity: 0.12; }
             100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
         }
+
+        .laravel-cubes-bg {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .laravel-cube {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: linear-gradient(135deg, #FF2D20 0%, #e6291c 100%);
+            border-radius: 4px;
+            opacity: 0.08;
+            animation: float-cube linear infinite;
+        }
+
+        .dark .laravel-cube {
+            opacity: 0.12;
+        }
+
+        .laravel-cube::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, transparent 50%);
+            border-radius: 4px;
+        }
+
+        .laravel-cube:nth-child(1) {
+            left: 5%;
+            width: 40px;
+            height: 40px;
+            animation-duration: 25s;
+            animation-delay: 0s;
+        }
+
+        .laravel-cube:nth-child(2) {
+            left: 15%;
+            width: 20px;
+            height: 20px;
+            animation-duration: 20s;
+            animation-delay: -5s;
+        }
+
+        .laravel-cube:nth-child(3) {
+            left: 25%;
+            width: 35px;
+            height: 35px;
+            animation-duration: 28s;
+            animation-delay: -10s;
+        }
+
+        .laravel-cube:nth-child(4) {
+            left: 35%;
+            width: 25px;
+            height: 25px;
+            animation-duration: 22s;
+            animation-delay: -3s;
+        }
+
+        .laravel-cube:nth-child(5) {
+            left: 45%;
+            width: 45px;
+            height: 45px;
+            animation-duration: 30s;
+            animation-delay: -8s;
+        }
+
+        .laravel-cube:nth-child(6) {
+            left: 55%;
+            width: 30px;
+            height: 30px;
+            animation-duration: 24s;
+            animation-delay: -12s;
+        }
+
+        .laravel-cube:nth-child(7) {
+            left: 65%;
+            width: 22px;
+            height: 22px;
+            animation-duration: 26s;
+            animation-delay: -2s;
+        }
+
+        .laravel-cube:nth-child(8) {
+            left: 75%;
+            width: 38px;
+            height: 38px;
+            animation-duration: 21s;
+            animation-delay: -7s;
+        }
+
+        .laravel-cube:nth-child(9) {
+            left: 85%;
+            width: 28px;
+            height: 28px;
+            animation-duration: 27s;
+            animation-delay: -15s;
+        }
+
+        .laravel-cube:nth-child(10) {
+            left: 92%;
+            width: 32px;
+            height: 32px;
+            animation-duration: 23s;
+            animation-delay: -4s;
+        }
+
+        @keyframes float-cube {
+            0% {
+                transform: translateY(100vh) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.08;
+            }
+            .dark 10% {
+                opacity: 0.12;
+            }
+            90% {
+                opacity: 0.08;
+            }
+            100% {
+                transform: translateY(-100px) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        /* Subtle horizontal drift variation */
+        .laravel-cube:nth-child(odd) {
+            animation-name: float-cube-drift-left;
+        }
+
+        .laravel-cube:nth-child(even) {
+            animation-name: float-cube-drift-right;
+        }
+
+        @keyframes float-cube-drift-left {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.08;
+            }
+            50% {
+                transform: translateY(50vh) translateX(-30px) rotate(360deg);
+            }
+            90% {
+                opacity: 0.08;
+            }
+            100% {
+                transform: translateY(-100px) translateX(0) rotate(720deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes float-cube-drift-right {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.08;
+            }
+            50% {
+                transform: translateY(50vh) translateX(30px) rotate(360deg);
+            }
+            90% {
+                opacity: 0.08;
+            }
+            100% {
+                transform: translateY(-100px) translateX(0) rotate(720deg);
+                opacity: 0;
+            }
+        }
     </style>
-
-    <!-- Floating Laravel Cubes Background -->
-    <div class="laravel-cubes-bg" aria-hidden="true">
-        <div class="laravel-cube"></div>
-        <div class="laravel-cube"></div>
-        <div class="laravel-cube"></div>
-        <div class="laravel-cube"></div>
-        <div class="laravel-cube"></div>
-        <div class="laravel-cube"></div>
-        <div class="laravel-cube"></div>
-        <div class="laravel-cube"></div>
-        <div class="laravel-cube"></div>
-        <div class="laravel-cube"></div>
-    </div>
-
-    <div class="wordle-main">
-        <div class="wordle-header">
-            <h2 class="wordle-title">Dev Wordle</h2>
-            <p class="wordle-subtitle">Guess the PHP/Laravel term</p>
-        </div>
-
-        <template x-if="alreadyPlayed">
-            <div class="already-played-notice">
-                <p>You've already played today! Come back tomorrow for a new word.</p>
-            </div>
-        </template>
-
-        <div class="wordle-game">
-            <template x-for="(row, rowIndex) in board" :key="'row-' + rowIndex">
-                <div 
-                    class="wordle-row"
-                    :class="{ 'invalid': error && rowIndex === currentRowIndex }"
-                >
-                    <template x-for="(tile, tileIndex) in row" :key="'tile-' + rowIndex + '-' + tileIndex">
-                        <div 
-                            class="wordle-tile"
-                            :class="{
-                                'filled': tile.letter && !tile.status,
-                                'correct': tile.status === 'correct',
-                                'present': tile.status === 'present',
-                                'absent': tile.status === 'absent'
-                            }"
-                            x-text="tile.letter.toUpperCase()"
-                        ></div>
-                    </template>
-                </div>
-            </template>
-        </div>
-
-        <div 
-            class="wordle-message"
-            :class="{ 'error': error }"
-            x-text="message"
-        ></div>
-
-        <div class="wordle-keyboard">
-            <template x-for="(letterRow, rowIndex) in letters" :key="'kb-' + rowIndex">
-                <div class="keyboard-row">
-                    <template x-for="key in letterRow" :key="'key-' + key">
-                        <button
-                            type="button"
-                            class="wordle-key"
-                            :class="{
-                                'wide': key === 'Enter' || key === 'Backspace',
-                                'correct': getKeyStatus(key) === 'correct',
-                                'present': getKeyStatus(key) === 'present',
-                                'absent': getKeyStatus(key) === 'absent'
-                            }"
-                            @click="onKeyPress(key)"
-                            :disabled="status !== 'active' || loading"
-                        >
-                            <span x-text="key === 'Backspace' ? '⌫' : (key === 'Enter' ? 'ENTER' : key)"></span>
-                        </button>
-                    </template>
-                </div>
-            </template>
-        </div>
-    </div>
 </div>

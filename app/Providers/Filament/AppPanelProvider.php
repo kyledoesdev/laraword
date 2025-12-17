@@ -6,7 +6,6 @@ use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Pages\Dashboard;
 use Filament\Support\Colors\Color;
-use Filament\Widgets\AccountWidget;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Panels\Project\Pages\Settings;
 use Illuminate\Session\Middleware\StartSession;

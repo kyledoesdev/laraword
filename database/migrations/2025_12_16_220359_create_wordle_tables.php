@@ -6,16 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
          Schema::create('words', function (Blueprint $table) {
             $table->id();
-            $table->string('word', 10)->unique();
+            $table->string('word', 5)->unique();
             $table->boolean('is_target')->default(false);
             $table->timestamps();
+            $table->softDeletes();
             
             $table->index('is_target');
         });
@@ -25,6 +23,7 @@ return new class extends Migration
             $table->date('date')->unique();
             $table->foreignId('word_id')->constrained()->cascadeOnDelete();
             $table->timestamps();
+            $table->softDeletes();
             
             $table->index('date');
         });
@@ -32,14 +31,13 @@ return new class extends Migration
        Schema::create('wordle_games', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('daily_word_id')->constrained()->cascadeOnDelete();
-            $table->json('board_state');
+            $table->foreignId('word_id')->constrained()->cascadeOnDelete();
+            $table->string('status');
             $table->unsignedTinyInteger('current_row')->default(0);
-            $table->enum('status', ['active', 'won', 'lost'])->default('active');
             $table->unsignedTinyInteger('attempts_used')->default(0);
+            $table->json('board_state');
             $table->timestamps();
-
-            $table->unique(['user_id', 'daily_word_id']);
+            $table->softDeletes();
         });
     }
 };

@@ -2,39 +2,41 @@
 
 namespace App\Livewire;
 
+use App\Enums\GameStatus;
 use App\Models\DailyWord;
 use App\Models\Word;
 use App\Models\WordleGame as WordleGameModel;
-use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Computed;
 use Livewire\Component;
 
 class WordleGame extends Component
 {
-    public array $board = [];
-    public int $currentRowIndex = 0;
-    public string $status = 'active';
-    public string $message = '';
-    public int $guessesAllowed = 6;
+    public ?WordleGameModel $game = null;
+
     public int $wordLength = 5;
+
+    public int $guessesAllowed = 6;
+
+    public ?string $message = '';
+
+    public ?int $currentRowIndex = 0;
+
     public bool $alreadyPlayed = false;
 
     public function mount(): void
     {
-        $game = WordleGameModel::getOrCreateForToday(Auth::id());
         $dailyWord = DailyWord::getToday();
-        
-        $this->wordLength = strlen($dailyWord->word->word);
-        $this->board = $game->board_state;
-        $this->currentRowIndex = $game->current_row;
-        $this->status = $game->status;
-        $this->alreadyPlayed = $game->isComplete();
 
-        if ($this->status === 'won') {
-            $this->message = 'You already won today! 🎉';
-        } elseif ($this->status === 'lost') {
-            $this->message = "You lost today. The word was: {$dailyWord->word->word}";
-        }
+        $this->game = WordleGameModel::getOrCreateForToday(auth()->id());
+
+        $this->currentRowIndex = $this->game?->current_row;
+        $this->alreadyPlayed = $this->game?->isComplete();
+
+        $this->message = match($this->game?->status) {
+            GameStatus::WON->value => 'You already won today! 🎉',
+            GameStatus::LOST->value => "You lost today. The word was: {$dailyWord->word->word}",
+            default => ''
+        };
     }
 
     #[Computed]
@@ -45,60 +47,51 @@ class WordleGame extends Component
 
     public function submitGuess(string $guess): array
     {
-        $game = WordleGameModel::getOrCreateForToday(Auth::id());
-        $this->currentRowIndex = $game->current_row;
-        $this->status = $game->status;
-        $this->board = $game->board_state;
-
-        if ($this->status !== 'active') {
+        if ($this->game->status !== 'active') {
             return ['success' => false, 'error' => 'Game is complete'];
         }
 
-        if ($this->currentRowIndex >= $this->guessesAllowed) {
+        if ($this->game->current_row >= $this->guessesAllowed) {
             return ['success' => false, 'error' => 'No guesses remaining'];
         }
 
         $guess = strtolower($guess);
 
-        if (strlen($guess) !== $this->wordLength) {
+        if (strlen($guess) !== 5) {
             return ['success' => false, 'error' => 'Incomplete word'];
         }
 
-        if ($this->hasAlreadyGuessed($guess)) {
-            return ['success' => false, 'error' => 'Already guessed'];
-        }
-
-        if (!Word::isValidWord($guess)) {
+        if ($this->hasAlreadyGuessed($guess) || !Word::isValidWord($guess)) {
             return ['success' => false, 'error' => 'Invalid word'];
         }
 
         $statuses = $this->calculateStatuses($guess);
         
+        $boardState = $this->game->board_state;
         foreach ($statuses as $index => $status) {
-            $this->board[$this->currentRowIndex][$index]['letter'] = $guess[$index];
-            $this->board[$this->currentRowIndex][$index]['status'] = $status;
+            $boardState[$this->currentRowIndex][$index] = [
+                'letter' => $guess[$index],
+                'status' => $status,
+            ];
         }
 
         $won = $guess === $this->theWord;
         $isLastGuess = $this->currentRowIndex >= $this->guessesAllowed - 1;
 
         if ($won) {
-            $this->status = 'won';
+            $this->game->status = GameStatus::WON->value;
             $this->message = 'You Win! 🎉';
         } elseif ($isLastGuess) {
-            $this->status = 'lost';
+            $this->game->status = GameStatus::LOST->value;
             $this->message = "Game Over. The word was: " . strtoupper($this->theWord);
         }
-        
-        $nextRow = $this->currentRowIndex;
-        if (!$won && !$isLastGuess) {
-            $nextRow = $this->currentRowIndex + 1;
-        }
 
-        $game->update([
-            'board_state' => $this->board,
+        $nextRow = $won || $isLastGuess ? $this->currentRowIndex : $this->currentRowIndex + 1;
+
+        $this->game->update([
+            'board_state' => $boardState,
             'current_row' => $nextRow,
-            'status' => $this->status,
+            'status' => $this->game->status,
             'attempts_used' => $this->currentRowIndex + 1,
         ]);
 
@@ -116,13 +109,8 @@ class WordleGame extends Component
 
     protected function hasAlreadyGuessed(string $guess): bool
     {
-        foreach ($this->board as $row) {
-            $rowWord = collect($row)->pluck('letter')->join('');
-            if ($rowWord === $guess && !empty($row[0]['status'])) {
-                return true;
-            }
-        }
-        return false;
+        return collect($this->game->board_state)
+            ->contains(fn($row) => collect($row)->pluck('letter')->join('') === $guess && !empty($row[0]['status']));
     }
 
     protected function calculateStatuses(string $guess): array

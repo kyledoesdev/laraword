@@ -2,17 +2,22 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
-use Illuminate\Database\Eloquent\Model;
+use App\Models\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DailyWord extends Model
 {
-    protected $fillable = ['date', 'word_id'];
-
-    protected $casts = [
-        'date' => 'date',
+    protected $fillable = [
+        'word_id',
+        'date',
     ];
+
+    public function casts(): array
+    {
+        return [
+            'date' => 'date',
+        ];
+    }
 
     public function word(): BelongsTo
     {
@@ -20,17 +25,13 @@ class DailyWord extends Model
     }
 
     public static function getToday(): self
-    {
-        $today = Carbon::today();
-        
-        return self::with('word')
-            ->whereDate('date', $today)
-            ->firstOr(function () use ($today) {
-                $word = Word::getRandomTarget();
-                
+    {        
+        return self::query()
+            ->whereDate('date', today())
+            ->firstOr(function () {                
                 return self::create([
-                    'date' => $today,
-                    'word_id' => $word->id,
+                    'date' => today(),
+                    'word_id' => Word::getRandomTarget()->getKey(),
                 ]);
             });
     }

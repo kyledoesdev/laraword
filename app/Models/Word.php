@@ -7,11 +7,17 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Word extends Model
 {
-    protected $fillable = ['word', 'is_target'];
-
-    protected $casts = [
-        'is_target' => 'boolean',
+    protected $fillable = [
+        'word',
+        'is_target'
     ];
+
+    public function casts(): array
+    {
+        return [
+            'is_target' => 'boolean'
+        ];
+    }
 
     public function dailyWords(): HasMany
     {
@@ -20,7 +26,8 @@ class Word extends Model
 
     public static function getRandomTarget(): self
     {
-        return self::where('is_target', true)
+        return self::query()
+            ->where('is_target', true)
             ->inRandomOrder()
             ->first();
     }
