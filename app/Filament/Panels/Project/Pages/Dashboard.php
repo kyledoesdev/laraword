@@ -11,5 +11,5 @@ class Dashboard extends Page
 
     public ?string $heading = '';
 
-    protected static ?string $navigationLabel = 'Home';
+    protected static ?string $navigationLabel = 'Daily Game';
 }

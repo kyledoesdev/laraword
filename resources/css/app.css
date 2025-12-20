@@ -6,5 +6,9 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Inter', 'Popins', sans-serif; /* 'Fredoka',  */
+    --font-sans: 'Inter', 'Poppins', sans-serif;
 }
+
+/* Laraword Landing Page Styles */
+@import './components/welcome.css';
+@import './components/word-bank.css';

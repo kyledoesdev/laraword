@@ -1,53 +1,24 @@
 <?php
 
-namespace App\Livewire;
+namespace App\Livewire\Concerns;
 
-use App\Enums\GameStatus;
-use App\Models\DailyWord;
 use App\Models\Word;
-use App\Models\WordleGame as WordleGameModel;
-use Livewire\Attributes\Computed;
-use Livewire\Component;
+use App\Enums\GameStatus;
+use App\Enums\LetterState;
 
-class WordleGame extends Component
+trait HasWordleLogic
 {
-    public ?WordleGameModel $game = null;
-
     public int $wordLength = 5;
 
     public int $guessesAllowed = 6;
 
-    public ?string $message = '';
-
     public ?int $currentRowIndex = 0;
 
-    public bool $alreadyPlayed = false;
-
-    public function mount(): void
-    {
-        $dailyWord = DailyWord::getToday();
-
-        $this->game = WordleGameModel::getOrCreateForToday(auth()->id());
-
-        $this->currentRowIndex = $this->game?->current_row;
-        $this->alreadyPlayed = $this->game?->isComplete();
-
-        $this->message = match($this->game?->status) {
-            GameStatus::WON->value => 'You already won today! 🎉',
-            GameStatus::LOST->value => "You lost today. The word was: {$dailyWord->word->word}",
-            default => ''
-        };
-    }
-
-    #[Computed]
-    public function theWord(): string
-    {
-        return strtolower(DailyWord::getToday()->word->word);
-    }
+    public bool $isFreePlay = false;
 
     public function submitGuess(string $guess): array
     {
-        if ($this->game->status !== 'active') {
+        if ($this->game->status !== GameStatus::ACTIVE->value) {
             return ['success' => false, 'error' => 'Game is complete'];
         }
 
@@ -65,7 +36,7 @@ class WordleGame extends Component
             return ['success' => false, 'error' => 'Invalid word'];
         }
 
-        $statuses = $this->calculateStatuses($guess);
+        $statuses = $this->checkLetters($guess);
         
         $boardState = $this->game->board_state;
         foreach ($statuses as $index => $status) {
@@ -113,7 +84,7 @@ class WordleGame extends Component
             ->contains(fn($row) => collect($row)->pluck('letter')->join('') === $guess && !empty($row[0]['status']));
     }
 
-    protected function calculateStatuses(string $guess): array
+    protected function checkLetters(string $guess): array
     {
         $word = str_split($this->theWord);
         $guessLetters = str_split($guess);
@@ -121,7 +92,7 @@ class WordleGame extends Component
 
         foreach ($guessLetters as $index => $letter) {
             if ($word[$index] === $letter) {
-                $statuses[$index] = 'correct';
+                $statuses[$index] = LetterState::CORRECT->value;
                 $word[$index] = null;
             }
         }
@@ -131,18 +102,13 @@ class WordleGame extends Component
             
             $foundIndex = array_search($letter, $word);
             if ($foundIndex !== false) {
-                $statuses[$index] = 'present';
+                $statuses[$index] = LetterState::PRESENT->value;
                 $word[$foundIndex] = null;
             } else {
-                $statuses[$index] = 'absent';
+                $statuses[$index] = LetterState::ABSENT->value;
             }
         }
 
         return $statuses;
-    }
-
-    public function render()
-    {
-        return view('livewire.wordle-game');
     }
 }

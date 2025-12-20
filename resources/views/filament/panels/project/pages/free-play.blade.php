@@ -1,3 +1,3 @@
 <x-filament-panels::page>
-    <livewire:daily-wordle-game />
+    <livewire:free-play-wordle-game />
 </x-filament-panels::page>

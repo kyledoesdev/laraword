@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
+use App\Console\Commands\SetDailyWord;
 use App\Models\Word;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class WordSeeder extends Seeder
 {
@@ -19,6 +21,8 @@ class WordSeeder extends Seeder
         }
         
         $this->command->info(count($targetWords) . ' dev words seeded!');
+
+        Artisan::call(SetDailyWord::class);
     }
 
     protected function getTargetWords(): array

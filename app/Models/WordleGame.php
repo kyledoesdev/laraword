@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\User;
 use App\Enums\GameStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -11,6 +12,7 @@ class WordleGame extends Model
     protected $fillable = [
         'user_id',
         'word_id',
+        'daily_word_id',
         'board_state',
         'current_row',
         'status',
@@ -23,12 +25,18 @@ class WordleGame extends Model
             'board_state' => 'array',
             'current_row' => 'integer',
             'attempts_used' => 'integer',
+            'is_daily_game' => 'boolean'
         ];
     }
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function word(): BelongsTo
+    {
+        return $this->belongsTo(Word::class);
     }
 
     public function dailyWord(): BelongsTo
@@ -38,17 +46,38 @@ class WordleGame extends Model
 
     public function isComplete(): bool
     {
-        return in_array($this->status, [GameStatus::WON, GameStatus::LOST]);
+        return in_array($this->status, [GameStatus::WON->value, GameStatus::LOST->value]);
     }
 
-    public static function getOrCreateForToday(int $userId): self
+    public static function getOrCreateForToday(User $user): self
     {
         return self::firstOrCreate([
-            'user_id' => $userId,
-            'word_id' => DailyWord::getToday()->getKey(),
+            'user_id' => $user->getKey(),
+            'daily_word_id' => DailyWord::getToday()->getKey(),
         ], [
             'board_state' => self::createEmptyBoard(),
             'status' => GameStatus::ACTIVE->value,
+        ]);
+    }
+
+    public static function getOrCreateFreePlayGame(User $user): self
+    {
+        $activeGame = self::query()
+            ->where('user_id', $user->getKey())
+            ->where('status', GameStatus::ACTIVE->value)
+            ->whereNull('daily_word_id')
+            ->first();
+
+        if ($activeGame) {
+            return $activeGame;
+        }
+
+        return self::create([
+            'user_id' => $user->getKey(),
+            'word_id' => Word::inRandomOrder()->first()->getKey(),
+            'status' => GameStatus::ACTIVE->value,
+            'is_daily_game' => false,
+            'board_state' => self::createEmptyBoard(),
         ]);
     }
 

@@ -4,7 +4,7 @@
         currentRowIndex: @js($currentRowIndex),
         status: @js($game->status),
         message: @js($message),
-        alreadyPlayed: @js($alreadyPlayed),
+        alreadyPlayed: @js($alreadyPlayed ?? false),
         guessesAllowed: @js($guessesAllowed),
         wordLength: @js($wordLength),
         error: false,
@@ -170,9 +170,13 @@
 
     <div class="wordle-main">
         <div class="wordle-header">
-            <h2 class="wordle-title">LaraWord</h2>
+            <h2 class="wordle-title">LaraWord {{ $isFreePlay ? '(Free Play)' : '' }}</h2>
             <p class="wordle-subtitle">Guess the PHP/Laravel term</p>
         </div>
+
+        @if ($isFreePlay && $game->isComplete())
+            <a href="{{ route('filament.app.pages.free-play') }}" class="btn btn-primary btn-sm">Play Again?</a>
+        @endif
 
         <template x-if="alreadyPlayed">
             <div class="already-played-notice">
@@ -469,55 +473,6 @@
         .wordle-key:disabled {
             opacity: 0.6;
             cursor: not-allowed;
-        }
-
-        /* Laravel Floating Cubes */
-        .laravel-cubes-bg {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .laravel-cube {
-            position: absolute;
-            background: linear-gradient(135deg, #FF2D20 0%, #e6291c 100%);
-            border-radius: 4px;
-            opacity: 0.08;
-        }
-
-        .dark .laravel-cube {
-            opacity: 0.12;
-        }
-
-        .laravel-cube:nth-child(1) { left: 5%; width: 40px; height: 40px; animation: float-cube 25s linear infinite; }
-        .laravel-cube:nth-child(2) { left: 15%; width: 20px; height: 20px; animation: float-cube 20s linear infinite -5s; }
-        .laravel-cube:nth-child(3) { left: 25%; width: 35px; height: 35px; animation: float-cube 28s linear infinite -10s; }
-        .laravel-cube:nth-child(4) { left: 35%; width: 25px; height: 25px; animation: float-cube 22s linear infinite -3s; }
-        .laravel-cube:nth-child(5) { left: 45%; width: 45px; height: 45px; animation: float-cube 30s linear infinite -8s; }
-        .laravel-cube:nth-child(6) { left: 55%; width: 30px; height: 30px; animation: float-cube 24s linear infinite -12s; }
-        .laravel-cube:nth-child(7) { left: 65%; width: 22px; height: 22px; animation: float-cube 26s linear infinite -2s; }
-        .laravel-cube:nth-child(8) { left: 75%; width: 38px; height: 38px; animation: float-cube 21s linear infinite -7s; }
-        .laravel-cube:nth-child(9) { left: 85%; width: 28px; height: 28px; animation: float-cube 27s linear infinite -15s; }
-        .laravel-cube:nth-child(10) { left: 92%; width: 32px; height: 32px; animation: float-cube 23s linear infinite -4s; }
-
-        @keyframes float-cube {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.08; }
-            90% { opacity: 0.08; }
-            100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
-        }
-
-        .dark .laravel-cube {
-            animation-name: float-cube-dark;
-        }
-
-        @keyframes float-cube-dark {
-            0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.12; }
-            90% { opacity: 0.12; }
-            100% { transform: translateY(-100px) rotate(720deg); opacity: 0; }
         }
 
         .laravel-cubes-bg {

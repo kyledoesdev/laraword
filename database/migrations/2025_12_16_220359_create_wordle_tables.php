@@ -11,7 +11,7 @@ return new class extends Migration
          Schema::create('words', function (Blueprint $table) {
             $table->id();
             $table->string('word', 5)->unique();
-            $table->boolean('is_target')->default(false);
+            $table->boolean('is_target')->default(true);
             $table->timestamps();
             $table->softDeletes();
             
@@ -31,7 +31,8 @@ return new class extends Migration
        Schema::create('wordle_games', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
-            $table->foreignId('word_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('word_id')->nullable();
+            $table->foreignId('daily_word_id')->nullable();
             $table->string('status');
             $table->unsignedTinyInteger('current_row')->default(0);
             $table->unsignedTinyInteger('attempts_used')->default(0);

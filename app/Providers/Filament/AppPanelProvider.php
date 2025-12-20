@@ -5,6 +5,7 @@ namespace App\Providers\Filament;
 use Filament\Panel;
 use Filament\PanelProvider;
 use Filament\Support\Colors\Color;
+use Filament\Navigation\NavigationItem;
 use Filament\Http\Middleware\Authenticate;
 use App\Filament\Panels\Project\Pages\Settings;
 use Illuminate\Session\Middleware\StartSession;
@@ -25,7 +26,7 @@ class AppPanelProvider extends PanelProvider
         return $panel
             ->default()
             ->id('app')
-            ->path('')
+            ->path('app')
             ->login()
             ->profile(Settings::class, false)
             ->registration()
@@ -39,6 +40,15 @@ class AppPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Panels//Project/Pages'), for: 'App\Filament\Panels\Project\Pages')
             ->discoverWidgets(in: app_path('Filament/Panels/Project/Widgets'), for: 'App\Filament\Panels\Project\Widgets')
             ->topNavigation()
+            ->navigationItems([
+                NavigationItem::make('Word Bank')
+                    ->url('/word-bank', shouldOpenInNewTab: false)
+                    ->sort(3),
+                    
+                NavigationItem::make('Leaderboards')
+                    ->url('/leaderboards', shouldOpenInNewTab: false)
+                    ->sort(2),
+            ])
             ->spa()
             ->userMenuItems([
                 ConnectionsPageAction::make(),

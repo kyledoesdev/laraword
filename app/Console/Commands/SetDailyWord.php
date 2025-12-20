@@ -6,6 +6,7 @@ use App\Models\DailyWord;
 use App\Models\Word;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class SetDailyWord extends Command
 {
@@ -14,26 +15,56 @@ class SetDailyWord extends Command
 
     public function handle(): int
     {
-        $date = $this->option('date') 
-            ? Carbon::parse($this->option('date')) 
-            : Carbon::today();
+        $date = $this->resolveDate();
 
-        $existing = DailyWord::whereDate('date', $date)->first();
-        
-        if ($existing) {
-            $this->info("Word already set for {$date->toDateString()}: {$existing->word->word}");
+        if ($existing = $this->dailyWordForDate($date)) {
+            $this->info(
+                "Word already set for {$date->toDateString()}: {$existing->word->word}"
+            );
+
             return self::SUCCESS;
         }
 
-        $word = Word::getRandomTarget();
-        
+        $word = $this->resolveDailyWord();
+
         DailyWord::create([
-            'date' => $date,
-            'word_id' => $word->id,
+            'date'    => $date,
+            'word_id' => $word->getKey(),
         ]);
 
-        $this->info("Daily word set for {$date->toDateString()}: {$word->word}");
-        
+        $this->info(
+            "Daily word set for {$date->toDateString()}: {$word->word}"
+        );
+
         return self::SUCCESS;
+    }
+
+    private function resolveDate(): Carbon
+    {
+        return $this->option('date')
+            ? Carbon::parse($this->option('date'))
+            : Carbon::today();
+    }
+
+    private function dailyWordForDate(Carbon $date): ?DailyWord
+    {
+        return DailyWord::whereDate('date', $date)->first();
+    }
+
+    private function resolveDailyWord(): Word
+    {
+        $word = Word::getRandomTarget();
+
+        if (! $word) {
+            Log::warning('All words have had a daily game, resetting all words.');
+
+            Word::query()->update(['is_target' => true]);
+
+            $word = Word::getRandomTarget();
+        }
+
+        $word->update(['is_target' => false]);
+
+        return $word;
     }
 }
