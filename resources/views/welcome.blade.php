@@ -38,39 +38,39 @@
             <div class="demo-game fade-in delay-2">
                 <div class="game-board">
                     <div class="game-row">
-                        <div class="game-tile correct">B</div>
-                        <div class="game-tile absent">L</div>
-                        <div class="game-tile present">A</div>
-                        <div class="game-tile absent">D</div>
-                        <div class="game-tile absent">E</div>
+                        <div class="game-tile absent">S</div>
+                        <div class="game-tile absent">C</div>
+                        <div class="game-tile present">O</div>
+                        <div class="game-tile absent">U</div>
+                        <div class="game-tile absent">T</div>
                     </div>
                     <div class="game-row">
-                        <div class="game-tile absent">M</div>
+                        <div class="game-tile absent">F</div>
                         <div class="game-tile correct">O</div>
-                        <div class="game-tile absent">D</div>
-                        <div class="game-tile absent">E</div>
-                        <div class="game-tile absent">L</div>
+                        <div class="game-tile absent">R</div>
+                        <div class="game-tile absent">G</div>
+                        <div class="game-tile present">E</div>
                     </div>
                     <div class="game-row">
-                        <div class="game-tile correct">B</div>
+                        <div class="game-tile correct">M</div>
+                        <div class="game-tile absent">Y</div>
+                        <div class="game-tile absent">S</div>
+                        <div class="game-tile absent">Q</div>
+                        <div class="game-tile present">L</div>
+                    </div>
+                    <div class="game-row">
+                        <div class="game-tile absent">C</div>
+                        <div class="game-tile present">L</div>
+                        <div class="game-tile present">O</div>
+                        <div class="game-tile absent">U</div>
+                        <div class="game-tile present">D</div>
+                    </div>
+                    <div class="game-row">
+                        <div class="game-tile correct">M</div>
                         <div class="game-tile correct">O</div>
-                        <div class="game-tile correct">A</div>
-                        <div class="game-tile correct">R</div>
                         <div class="game-tile correct">D</div>
-                    </div>
-                    <div class="game-row">
-                        <div class="game-tile"></div>
-                        <div class="game-tile"></div>
-                        <div class="game-tile"></div>
-                        <div class="game-tile"></div>
-                        <div class="game-tile"></div>
-                    </div>
-                    <div class="game-row">
-                        <div class="game-tile"></div>
-                        <div class="game-tile"></div>
-                        <div class="game-tile"></div>
-                        <div class="game-tile"></div>
-                        <div class="game-tile"></div>
+                        <div class="game-tile correct">E</div>
+                        <div class="game-tile correct">L</div>
                     </div>
                     <div class="game-row">
                         <div class="game-tile"></div>
