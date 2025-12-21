@@ -40,11 +40,11 @@ class WordleGameResource extends Resource
                 TextEntry::make('user.name')
                     ->label('User')
                     ->icon(Heroicon::UserCircle),
-                TextEntry::make('word.name')
+                TextEntry::make('word.word')
                     ->label('Word')
                     ->placeholder('-')
                     ->icon(Heroicon::DocumentText),
-                TextEntry::make('dailyWord.name')
+                TextEntry::make('dailyWord.word')
                     ->label('Daily Word')
                     ->placeholder('-')
                     ->icon(Heroicon::Calendar),
