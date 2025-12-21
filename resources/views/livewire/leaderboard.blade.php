@@ -111,8 +111,8 @@
                             🎯
                         </div>
                         <div>
-                            <h2 class="text-lg sm:text-xl font-bold text-gray-900">Best Efficiency</h2>
-                            <p class="text-sm text-gray-500">Lowest average guesses (min. 3 wins)</p>
+                            <h2 class="text-lg sm:text-xl font-bold text-gray-900">Puzzle Experts</h2>
+                            <p class="text-sm text-gray-500">Lowest average guesses</p>
                         </div>
                     </div>
 
@@ -189,7 +189,7 @@
                     </div>
 
                     <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 text-center">
-                        <p class="text-sm text-gray-500">Win 3+ games to qualify!</p>
+                        <p class="text-sm text-gray-500">Win 1+ games to qualify!</p>
                     </div>
                 </div>
             </div>
