@@ -1,4 +1,4 @@
-<a href="{{ url('/') }}" style="
+<a href="{{ auth()->check() ? route('filament.app.pages.dashboard') : route('welcome') }}" style="
     display: flex;
     align-items: center;
     gap: 0.5rem; /* gap-2 */
