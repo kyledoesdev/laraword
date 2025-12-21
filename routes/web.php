@@ -1,21 +1,13 @@
 <?php
 
-use App\Http\Controllers\ConnectionController;
-use App\Http\Controllers\WordBankController;
+use App\Livewire\Leaderboard;
+use App\Livewire\WordBank;
 use Illuminate\Support\Facades\Route;
 
 // Landing Page
-Route::view('/', 'welcome')->name('home');
+Route::view('/', 'welcome')->name('welcome');
 
-// Leaderboards Page
-Route::get('/leaderboards', function () {
-    return view('leaderboards');
-})->name('leaderboards');
-
-Route::get('/word-bank', WordBankController::class)->name('word-bank');
-
-
-Route::get('/connect/{type}', [ConnectionController::class, 'connect'])->name('connect');
-Route::get('/connect/{type}/callback', [ConnectionController::class, 'processConnection'])->name('connect.callback');
+Route::get('/leaderboards', Leaderboard::class)->name('leaderboards');
+Route::get('/word-bank', WordBank::class)->name('word-bank');
 
 Route::supportBubble();

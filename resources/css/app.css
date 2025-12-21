@@ -9,6 +9,10 @@
     --font-sans: 'Inter', 'Poppins', sans-serif;
 }
 
-/* Laraword Landing Page Styles */
-@import './components/welcome.css';
-@import './components/word-bank.css';
+@import './components/global.css';
+@import './components/utils.css';
+@import './components/cubes.css';
+
+[x-cloak] {
+    display: none !important;
+}

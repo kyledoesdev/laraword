@@ -7,11 +7,16 @@
     "license": "MIT",
     "require": {
         "php": "^8.2",
+        "bugsnag/bugsnag-laravel": "^2.29",
         "filament/filament": "^4.0",
         "kyledoesdev/essentials": "^0.0.2",
         "laravel/framework": "^12.0",
+        "laravel/nightwatch": "^1.21",
         "laravel/socialite": "^5.23",
         "laravel/tinker": "^2.10.1",
+        "marvinlabs/laravel-discord-logger": "*",
+        "spatie/filament-simple-stats": "^1.0",
+        "spatie/laravel-stats": "*",
         "spatie/laravel-support-bubble": "^1.9"
     },
     "require-dev": {

@@ -27,5 +27,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         $this->call(WordSeeder::class);
+        $this->call(LeaderboardSeeder::class);
     }
 }

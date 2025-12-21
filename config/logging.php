@@ -73,27 +73,6 @@ return [
             'replace_placeholders' => true,
         ],
 
-        'slack' => [
-            'driver' => 'slack',
-            'url' => env('LOG_SLACK_WEBHOOK_URL'),
-            'username' => env('LOG_SLACK_USERNAME', 'Laravel Log'),
-            'emoji' => env('LOG_SLACK_EMOJI', ':boom:'),
-            'level' => env('LOG_LEVEL', 'critical'),
-            'replace_placeholders' => true,
-        ],
-
-        'papertrail' => [
-            'driver' => 'monolog',
-            'level' => env('LOG_LEVEL', 'debug'),
-            'handler' => env('LOG_PAPERTRAIL_HANDLER', SyslogUdpHandler::class),
-            'handler_with' => [
-                'host' => env('PAPERTRAIL_URL'),
-                'port' => env('PAPERTRAIL_PORT'),
-                'connectionString' => 'tls://'.env('PAPERTRAIL_URL').':'.env('PAPERTRAIL_PORT'),
-            ],
-            'processors' => [PsrLogMessageProcessor::class],
-        ],
-
         'stderr' => [
             'driver' => 'monolog',
             'level' => env('LOG_LEVEL', 'debug'),
@@ -127,6 +106,17 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'bugsnag' => [
+            'driver' => 'bugsnag',
+        ],
+
+        'discord_status_updates' => [
+            'driver' => 'custom',
+            'via' => MarvinLabs\DiscordLogger\Logger::class,
+            'level' => 'debug',
+            'url' => env('DISCORD_WEBHOOK_STATUS_UPDATES'),
+            'ignore_exceptions' => env('LOG_DISCORD_IGNORE_EXCEPTIONS', false),
+        ],
     ],
 
 ];

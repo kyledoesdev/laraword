@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Filament\Facades\Filament;
+use App\Concerns\StatsAfterEvents;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
@@ -19,6 +19,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
     use HasFactory;
     use Notifiable;
     use SoftDeletes;
+    use StatsAfterEvents;
 
     protected $fillable = [
         'name',
@@ -36,8 +37,12 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
     ];
 
     protected $hidden = [
-        'password',
         'remember_token',
+        'ip_address',
+        'user_agent',
+        'user_platform',
+        'user_packet',
+        'password',
     ];
 
     protected function casts(): array
@@ -45,6 +50,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'user_packet' => 'object',
         ];
     }
 
@@ -54,6 +60,7 @@ class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerif
 
         static::creating(function (self $user) {
             $user->timezone ??= timezone();
+            $user->avatar = 'https://api.dicebear.com/7.x/identicon/svg?seed='.urlencode($user->name);
         });
     }
 

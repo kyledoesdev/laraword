@@ -11,6 +11,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        $middleware->redirectGuestsTo(fn () => route('welcome'));
+        $middleware->redirectUsersTo(fn () => route('filament.app.pages.dashboard'));
+
+        $middleware->throttleApi();
+
         $middleware->validateCsrfTokens(except: [
 			'support-bubble',
 		]);

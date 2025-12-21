@@ -1,0 +1,84 @@
+@layer utilities {
+    .tile-base {
+        @apply flex items-center justify-center font-bold uppercase border-2 select-none;
+    }
+
+    .tile-correct {
+        background-color: var(--correct);
+        border-color: color-mix(in srgb, var(--correct) 85%, black);
+        color: white;
+    }
+
+    .tile-present {
+        background-color: var(--present);
+        border-color: color-mix(in srgb, var(--present) 85%, black);
+        color: white;
+    }
+
+    .tile-absent {
+        background-color: var(--absent);
+        border-color: color-mix(in srgb, var(--absent) 85%, black);
+        color: white;
+    }
+
+    .tile-empty {
+        @apply bg-white border-gray-200 text-gray-400;
+    }
+
+    /* --------------------------------------------------------------------------
+    Buttons
+    -------------------------------------------------------------------------- */
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.2s;
+        cursor: pointer;
+        border: none;
+    }
+
+    .btn-sm {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .btn-primary {
+        background: var(--laravel);
+        color: white;
+        box-shadow: 0 4px 14px rgba(255, 45, 32, 0.3);
+    }
+
+    .btn-primary:hover {
+        background: var(--laravel-dark);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(255, 45, 32, 0.4);
+    }
+
+    .btn-secondary {
+        background: white;
+        color: var(--gray-700);
+        border: 2px solid var(--gray-200);
+    }
+
+    .btn-secondary:hover {
+        border-color: var(--gray-300);
+        background: var(--gray-50);
+    }
+
+    .btn-ghost {
+        background: transparent;
+        color: var(--gray-600);
+        padding: 0.5rem 1rem;
+    }
+
+    .btn-ghost:hover {
+        color: var(--gray-900);
+        background: var(--gray-100);
+    }
+}

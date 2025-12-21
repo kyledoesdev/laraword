@@ -1,210 +1,220 @@
-<x-layouts.guest>
+<x-layouts.app>
+
     <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <div class="hero-text fade-in">
-                <div class="badge">
-                    <span class="badge-icon">🎮</span>
+    <section class="relative z-10 min-h-screen flex items-center justify-center pt-16 pb-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+            <!-- Left Content -->
+            <div class="text-center lg:text-left">
+                <div class="inline-flex items-center gap-2 px-4 py-2 bg-red-50 text-[#FF2D20] rounded-full text-sm font-semibold mb-6">
+                    <span>🎮</span>
                     New: Free Play Mode Available!
                 </div>
-                <h1>The Daily Word Game for <span>Laravel</span> Developers</h1>
-                <p>Challenge yourself with PHP and Laravel terminology. One word per day. Six guesses. How well do you know your framework?</p>
-                <div class="hero-buttons">
+
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight mb-6">
+                    The Daily Word Game for <span class="text-[#FF2D20]">Laravel</span> Developers
+                </h1>
+
+                <p class="text-lg sm:text-xl text-gray-500 mb-8 max-w-xl mx-auto lg:mx-0">
+                    Challenge yourself with PHP and Laravel terminology. One word per day. Six guesses.
+                </p>
+
+                <div class="flex flex-wrap gap-4 justify-center lg:justify-start mb-10">
                     @auth
-                        <a href="{{ url('/game') }}" class="btn btn-primary">Play Today's Word →</a>
+                        <a href="{{ url('/game') }}" class="btn btn-primary">
+                            Play Today's Word →
+                        </a>
                     @else
-                        <a href="{{ url('/game/register') }}" class="btn btn-primary">Start Playing Free →</a>
-                        <a href="#how-to-play" class="btn btn-secondary">Learn More</a>
+                        <a href="{{ url('/game/register') }}" class="btn btn-primary">
+                            Start Playing Free →
+                        </a>
+                        <a href="#how-to-play" class="btn btn-ghost">
+                            Learn More
+                        </a>
                     @endauth
                 </div>
+            </div>
 
-                <div class="game-modes">
-                    <div class="mode-card featured">
-                        <div class="mode-icon">📅</div>
-                        <div class="mode-info">
-                            <h4>Daily Challenge</h4>
-                            <p>Same word for everyone, once per day</p>
+            <!-- Demo Board -->
+            <div class="flex justify-center lg:justify-end">
+                <div class="bg-white border-[3px] border-[#FF2D20] rounded-2xl p-3 sm:p-4 shadow-2xl shadow-red-500/20">
+                    @php
+                        $demoBoard = [
+                            [['S', 'absent'], ['C', 'absent'], ['O', 'present'], ['U', 'absent'], ['T', 'absent']],
+                            [['F', 'absent'], ['O', 'correct'], ['R', 'absent'], ['G', 'absent'], ['E', 'present']],
+                            [['M', 'correct'], ['Y', 'absent'], ['S', 'absent'], ['Q', 'absent'], ['L', 'present']],
+                            [['C', 'absent'], ['L', 'present'], ['O', 'present'], ['U', 'absent'], ['D', 'present']],
+                            [['M', 'correct'], ['O', 'correct'], ['D', 'correct'], ['E', 'correct'], ['L', 'correct']],
+                            [['', ''], ['', ''], ['', ''], ['', ''], ['', '']],
+                        ];
+
+                        $statusClasses = [
+                            'correct' => 'tile-correct',
+                            'present' => 'tile-present',
+                            'absent'  => 'tile-absent',
+                            ''        => 'tile-empty',
+                        ];
+                    @endphp
+
+                    @foreach ($demoBoard as $row)
+                        <div class="flex gap-1.5 sm:gap-2 mb-2 last:mb-0">
+                            @foreach ($row as [$letter, $status])
+                                <div class="tile-base w-12 h-12 sm:w-14 sm:h-14 text-xl sm:text-2xl rounded-lg {{ $statusClasses[$status] }}">
+                                    {{ $letter }}
+                                </div>
+                            @endforeach
                         </div>
-                    </div>
-                    <div class="mode-card">
-                        <div class="mode-icon">♾️</div>
-                        <div class="mode-info">
-                            <h4>Free Play</h4>
-                            <p>Unlimited practice, random words</p>
-                        </div>
-                    </div>
+                    @endforeach
                 </div>
             </div>
-            <div class="demo-game fade-in delay-2">
-                <div class="game-board">
-                    <div class="game-row">
-                        <div class="game-tile absent">S</div>
-                        <div class="game-tile absent">C</div>
-                        <div class="game-tile present">O</div>
-                        <div class="game-tile absent">U</div>
-                        <div class="game-tile absent">T</div>
-                    </div>
-                    <div class="game-row">
-                        <div class="game-tile absent">F</div>
-                        <div class="game-tile correct">O</div>
-                        <div class="game-tile absent">R</div>
-                        <div class="game-tile absent">G</div>
-                        <div class="game-tile present">E</div>
-                    </div>
-                    <div class="game-row">
-                        <div class="game-tile correct">M</div>
-                        <div class="game-tile absent">Y</div>
-                        <div class="game-tile absent">S</div>
-                        <div class="game-tile absent">Q</div>
-                        <div class="game-tile present">L</div>
-                    </div>
-                    <div class="game-row">
-                        <div class="game-tile absent">C</div>
-                        <div class="game-tile present">L</div>
-                        <div class="game-tile present">O</div>
-                        <div class="game-tile absent">U</div>
-                        <div class="game-tile present">D</div>
-                    </div>
-                    <div class="game-row">
-                        <div class="game-tile correct">M</div>
-                        <div class="game-tile correct">O</div>
-                        <div class="game-tile correct">D</div>
-                        <div class="game-tile correct">E</div>
-                        <div class="game-tile correct">L</div>
-                    </div>
-                    <div class="game-row">
-                        <div class="game-tile"></div>
-                        <div class="game-tile"></div>
-                        <div class="game-tile"></div>
-                        <div class="game-tile"></div>
-                        <div class="game-tile"></div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </section>
 
     <!-- Features Section -->
-    <section class="features" id="features">
-        <div class="features-inner">
-            <div class="section-header fade-in">
-                <h2>Why Play Laraword?</h2>
-                <p>More than just a game — it's a fun way to keep your Laravel knowledge sharp.</p>
+    <section class="relative z-10 py-10 px-4 sm:px-6 lg:px-8 bg-white" id="features">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+                    Why Play Laraword?
+                </h2>
+                <p class="text-lg text-gray-500 max-w-2xl mx-auto">
+                    More than just a game — it's a fun way to interact with the greater Laravel community.
+                </p>
             </div>
-            <div class="features-grid">
-                <div class="feature-card fade-in delay-1">
-                    <div class="feature-icon">🎯</div>
-                    <h3>Daily Challenge</h3>
-                    <p>A new PHP/Laravel-themed word every day. Come back tomorrow for a fresh puzzle!</p>
-                </div>
-                <div class="feature-card fade-in delay-2">
-                    <div class="feature-icon">♾️</div>
-                    <h3>Free Play Mode</h3>
-                    <p>Practice anytime with unlimited random words. Perfect for warming up or learning new terms.</p>
-                </div>
-                <div class="feature-card fade-in delay-3">
-                    <div class="feature-icon">🧠</div>
-                    <h3>Learn While Playing</h3>
-                    <p>Reinforce your knowledge of Laravel concepts, PHP functions, and dev terminology.</p>
-                </div>
-                <div class="feature-card fade-in delay-1">
-                    <div class="feature-icon">🏆</div>
-                    <h3>Leaderboards</h3>
-                    <p>Compete with other developers. Track your streaks and climb the rankings.</p>
-                </div>
-                <div class="feature-card fade-in delay-2">
-                    <div class="feature-icon">📚</div>
-                    <h3>Word Bank</h3>
-                    <p>Explore all the Laravel terms in our database. Learn something new every day.</p>
-                </div>
-                <div class="feature-card fade-in delay-3">
-                    <div class="feature-icon">📊</div>
-                    <h3>Track Progress</h3>
-                    <p>Your game state saves automatically. Come back anytime to finish your puzzle.</p>
-                </div>
+
+            @php
+                $features = [
+                    ['icon' => '🎯', 'title' => 'Daily Challenge', 'desc' => 'A new Laravel-themed word every day.'],
+                    ['icon' => '♾️', 'title' => 'Free Play Mode', 'desc' => 'Unlimited practice with random words.'],
+                    ['icon' => '🏆', 'title' => 'Leaderboards', 'desc' => 'Compete with developers worldwide.'],
+                    ['icon' => '📚', 'title' => 'Word Bank', 'desc' => 'Explore all Laravel terms.'],
+                    ['icon' => '📊', 'title' => 'Track Progress', 'desc' => 'Your progress saves automatically.'],
+                ];
+            @endphp
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 place-items-center">
+                @foreach ($features as $feature)
+                    <div class="w-full max-w-sm bg-gray-50 rounded-2xl p-6 text-center
+                                hover:-translate-y-1 hover:shadow-xl transition-all border-2 border-transparent hover:border-[#FF2D20]/20">
+                        <div class="w-16 h-16 bg-gradient-to-br from-[#FF2D20] to-[#e6291c] rounded-2xl flex items-center justify-center text-2xl mx-auto mb-4">
+                            {{ $feature['icon'] }}
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">{{ $feature['title'] }}</h3>
+                        <p class="text-gray-500">{{ $feature['desc'] }}</p>
+                    </div>
+                @endforeach
             </div>
         </div>
     </section>
 
     <!-- How to Play Section -->
-    <section class="how-to-play" id="how-to-play">
-        <div class="how-to-play-inner">
-            <div class="section-header fade-in">
-                <h2>How to Play</h2>
-                <p>Simple rules, endless fun. Here's how Laraword works.</p>
+    <section class="relative z-10 py-20 px-4 sm:px-6 lg:px-8 bg-gray-50" id="how-to-play">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-4">
+                <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+                    How to Play
+                </h2>
+                <p class="text-lg text-gray-500">
+                    Simple rules, endless fun.
+                </p>
             </div>
-            <div class="rules-list">
-                <div class="rule-item fade-in delay-1">
-                    <div class="rule-number">1</div>
-                    <div class="rule-content">
-                        <h3>Guess the Word</h3>
-                        <p>You have 6 attempts to guess the 5-letter PHP/Laravel term. Type your guess and press Enter.</p>
+
+            @php
+                $rules = [
+                    ['title' => 'Guess the Word', 'desc' => 'You have 6 attempts to guess the 5-letter Laravel term.'],
+                    ['title' => 'Check the Colors', 'desc' => 'Tiles change color to show how close you are.'],
+                    ['title' => 'Use the Clues', 'desc' => 'Narrow down the word using previous guesses.'],
+                    ['title' => 'Choose Your Mode', 'desc' => 'Daily challenge or free play mode.'],
+                ];
+            @endphp
+
+            <div class="space-y-4">
+                @foreach ($rules as $index => $rule)
+                    <div class="flex flex-col sm:flex-row gap-4 items-start bg-white rounded-2xl p-6 border border-gray-100">
+                        <div class="w-12 h-12 rounded-xl bg-[#FF2D20] text-white flex items-center justify-center font-bold text-xl shrink-0">
+                            {{ $index + 1 }}
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-bold text-gray-900 mb-1">{{ $rule['title'] }}</h3>
+                            <p class="text-gray-500">{{ $rule['desc'] }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="rule-item fade-in delay-2">
-                    <div class="rule-number">2</div>
-                    <div class="rule-content">
-                        <h3>Check the Colors</h3>
-                        <p>After each guess, the tiles change color to show how close you are to the answer.</p>
-                    </div>
-                </div>
-                <div class="rule-item fade-in delay-3">
-                    <div class="rule-number">3</div>
-                    <div class="rule-content">
-                        <h3>Use the Clues</h3>
-                        <p>Use the feedback from previous guesses to narrow down the word. The keyboard shows which letters you've tried.</p>
-                    </div>
-                </div>
-                <div class="rule-item fade-in delay-4">
-                    <div class="rule-number">4</div>
-                    <div class="rule-content">
-                        <h3>Choose Your Mode</h3>
-                        <p>Play the daily challenge to compete with everyone, or try free play for unlimited practice!</p>
-                    </div>
-                </div>
+                @endforeach
             </div>
-            <div class="color-legend fade-in">
-                <div class="legend-item">
-                    <div class="legend-tile correct">A</div>
-                    <span class="legend-text">Correct position</span>
+
+            <!-- Tile Examples -->
+            <div class="flex flex-col sm:flex-row justify-center gap-6 mt-12">
+                <div class="flex items-center gap-3">
+                    <div class="tile-base tile-correct w-12 h-12 rounded-lg">A</div>
+                    <span class="text-gray-600 font-medium">Correct position</span>
                 </div>
-                <div class="legend-item">
-                    <div class="legend-tile present">B</div>
-                    <span class="legend-text">Wrong position</span>
+                <div class="flex items-center gap-3">
+                    <div class="tile-base tile-present w-12 h-12 rounded-lg">B</div>
+                    <span class="text-gray-600 font-medium">Wrong position</span>
                 </div>
-                <div class="legend-item">
-                    <div class="legend-tile absent">C</div>
-                    <span class="legend-text">Not in word</span>
+                <div class="flex items-center gap-3">
+                    <div class="tile-base tile-absent w-12 h-12 rounded-lg">C</div>
+                    <span class="text-gray-600 font-medium">Not in word</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Stats/Links Section -->
-    <section class="stats-section">
-        <div class="stats-inner">
-            <div class="section-header fade-in">
-                <h2>Explore More</h2>
-                <p>Check out the leaderboards and word bank.</p>
-            </div>
-            <div class="stats-grid">
-                <a href="{{ url('/leaderboards') }}" class="stat-card fade-in delay-1">
-                    <div class="stat-icon">🏆</div>
-                    <div class="stat-info">
-                        <h3>Leaderboards</h3>
-                        <p>See top players, streaks, and stats</p>
-                    </div>
-                    <span class="stat-arrow">→</span>
-                </a>
-                <a href="{{ url('/word-bank') }}" class="stat-card fade-in delay-2">
-                    <div class="stat-icon">📚</div>
-                    <div class="stat-info">
-                        <h3>Word Bank</h3>
-                        <p>Browse all Laravel terms</p>
-                    </div>
-                    <span class="stat-arrow">→</span>
-                </a>
-            </div>
+    <!-- Explore Section -->
+    <section class="relative z-10 py-16 px-4 sm:px-6 lg:px-8 bg-white">
+        <div class="max-w-3xl mx-auto text-center mb-10">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">
+                Explore More
+            </h2>
+            <p class="text-lg text-gray-500">
+                Check out the leaderboards and word bank.
+            </p>
+        </div>
+
+        <div class="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <a href="{{ url('/leaderboards') }}" class="group flex items-center gap-4 bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 hover:border-[#FF2D20] hover:shadow-xl transition-all">
+                <div class="w-14 h-14 bg-gradient-to-br from-[#FF2D20] to-[#e6291c] rounded-xl flex items-center justify-center text-2xl">
+                    🏆
+                </div>
+                <div class="flex-1 text-left">
+                    <h3 class="font-bold text-gray-900">Leaderboards</h3>
+                    <p class="text-sm text-gray-500">See top players</p>
+                </div>
+            </a>
+
+            <a href="{{ url('/word-bank') }}" class="group flex items-center gap-4 bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 hover:border-[#FF2D20] hover:shadow-xl transition-all">
+                <div class="w-14 h-14 bg-gradient-to-br from-[#FF2D20] to-[#e6291c] rounded-xl flex items-center justify-center text-2xl">
+                    📚
+                </div>
+                <div class="flex-1 text-left">
+                    <h3 class="font-bold text-gray-900">Word Bank</h3>
+                    <p class="text-sm text-gray-500">Browse all terms</p>
+                </div>
+            </a>
         </div>
     </section>
-</x-layouts.guest>
+
+    <!-- CTA -->
+    <section class="relative z-10 py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-r from-[#FF2D20] to-[#e6291c]">
+        <div class="max-w-3xl mx-auto text-center">
+            <h2 class="text-3xl sm:text-4xl font-extrabold text-white mb-4">
+                Ready to Test Your Skills?
+            </h2>
+            <p class="text-xl text-white/80 mb-8">
+                Join developers who play Laraword daily.
+            </p>
+
+            @auth
+                <a href="{{ url('/game') }}" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#FF2D20] font-bold rounded-xl hover:bg-gray-100 transition-all">
+                    Play Today's Word →
+                </a>
+            @else
+                <a href="{{ url('/game/register') }}" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#FF2D20] font-bold rounded-xl hover:bg-gray-100 transition-all">
+                    Get Started Free →
+                </a>
+            @endauth
+        </div>
+    </section>
+
+</x-layouts.app>

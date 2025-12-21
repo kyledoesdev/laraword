@@ -4,7 +4,6 @@ namespace App\Providers\Filament;
 
 use App\Filament\Panels\Project\Pages\Settings;
 use App\Filament\UserMenuActions\ConnectionsPageAction;
-use App\Filament\UserMenuActions\ShowNameAction;
 use App\Http\Middleware\System\IsDeveloper;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
@@ -30,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->login()
             ->profile(Settings::class, false)
             ->colors([
-                'primary' => Color::Blue,
+                'primary' => Color::Purple,
             ])
             ->maxContentWidth('full')
             ->discoverResources(in: app_path('Filament/Panels/Admin/Resources'), for: 'App\Filament\Panels\Admin\Resources')

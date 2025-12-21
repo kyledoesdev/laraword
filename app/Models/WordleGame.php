@@ -6,6 +6,7 @@ use App\Models\User;
 use App\Enums\GameStatus;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class WordleGame extends Model
 {
@@ -34,14 +35,14 @@ class WordleGame extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function word(): BelongsTo
+    public function word(): HasOne
     {
-        return $this->belongsTo(Word::class);
+        return $this->hasOne(Word::class, 'id', 'word_id');
     }
 
-    public function dailyWord(): BelongsTo
+    public function dailyWord(): HasOne
     {
-        return $this->belongsTo(DailyWord::class);
+        return $this->hasOne(DailyWord::class, 'id', 'daily_word_id');
     }
 
     public function isComplete(): bool

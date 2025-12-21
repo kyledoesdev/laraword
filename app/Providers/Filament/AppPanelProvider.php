@@ -40,6 +40,7 @@ class AppPanelProvider extends PanelProvider
             ->discoverPages(in: app_path('Filament/Panels//Project/Pages'), for: 'App\Filament\Panels\Project\Pages')
             ->discoverWidgets(in: app_path('Filament/Panels/Project/Widgets'), for: 'App\Filament\Panels\Project\Widgets')
             ->topNavigation()
+            ->brandLogo(fn () => view('filament.panels.project.partials.logo'))
             ->navigationItems([
                 NavigationItem::make('Word Bank')
                     ->url('/word-bank', shouldOpenInNewTab: false)

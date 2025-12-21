@@ -26,7 +26,7 @@
         <div class="cube"></div>
     </div>
 
-    @include('components.layouts.partials.nav')
+    <livewire:navigation />
 
     <main>
         {{ $slot }}

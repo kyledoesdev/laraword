@@ -2,6 +2,7 @@
 
 namespace App\Listeners;
 
+use App\Stats\LoginStat;
 use Illuminate\Auth\Events\Login;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
@@ -30,5 +31,7 @@ class HandleUserLogin
             'user_platform' => $_SERVER['HTTP_SEC_CH_UA_PLATFORM'] ?? '',
             'user_packet' => zuck(),
         ]);
+
+        LoginStat::increase();
     }
 }

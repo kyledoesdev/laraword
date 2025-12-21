@@ -1,4 +1,4 @@
-<x-layouts.guest>
+<div>
     <section class="relative z-10 pt-28 pb-16 px-4 sm:px-6 lg:px-8">
         <div class="max-w-6xl mx-auto">
             <!-- Page Header -->
@@ -20,32 +20,29 @@
                         <input 
                             type="text" 
                             name="search" 
-                            value="{{ request('search') }}"
+                            wire:model.live="search"
                             placeholder="Search words..." 
-                            class="w-full px-5 py-3 pl-12 rounded-xl border-2 border-gray-200 focus:border-[#FF2D20] focus:ring-0 focus:outline-none transition-colors"
+                            class="w-full px-5 py-3 pl-12 rounded-xl border-2 border-gray-200 focus:border-[#FF2D20] focus:ring-0 focus:outline-none focus:shadow-[0_0_0_3px_rgba(255,45,32,0.1)] transition-all"
                         >
                         <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
                         </svg>
                     </div>
-                    <button type="submit" class="btn btn-primary">
-                        Search
-                    </button>
                 </form>
             </div>
 
             <!-- Alphabet Quick Jump -->
             <div class="flex flex-wrap justify-center gap-2 mb-8">
-                @foreach(range('A', 'Z') as $letter)
-                    <a 
-                        href="{{ url('/word-bank?letter=' . $letter) }}" 
-                        class="w-9 h-9 flex items-center justify-center rounded-lg font-semibold text-sm transition-all
-                            {{ request('letter') === $letter 
+                @foreach(range('A', 'Z') as $character)
+                    <button 
+                        wire:click="$set('letter', '{{ $character }}')"
+                        class="w-9 h-9 flex items-center justify-center rounded-lg font-semibold text-sm transition-all cursor-pointer
+                            {{ $letter === $character 
                                 ? 'bg-[#FF2D20] text-white' 
                                 : 'bg-white text-gray-600 hover:bg-gray-100 border border-gray-200' }}"
                     >
-                        {{ $letter }}
-                    </a>
+                        {{ $character }}
+                    </button>
                 @endforeach
                 <a 
                     href="{{ url('/word-bank') }}" 
@@ -62,10 +59,13 @@
             @if($words->count() > 0)
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
                     @foreach($words as $word)
-                        <div class="word-card group">
-                            <div class="word-tiles">
-                                @foreach(str_split($word->word) as $index => $letter)
-                                    <span class="word-tile" style="animation-delay: {{ $index * 0.05 }}s">
+                        <div class="group relative bg-white border-2 border-gray-200 rounded-2xl p-4 sm:p-5 flex items-center justify-between overflow-hidden transition-all hover:-translate-y-0.5 hover:shadow-lg hover:shadow-red-500/10">
+                            <!-- Hover gradient overlay -->
+                            <div class="absolute inset-0 bg-gradient-to-br from-[#FF2D20]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"></div>
+                            
+                            <div class="relative z-10 flex gap-1 sm:gap-1.5">
+                                @foreach(str_split($word->word) as $letter)
+                                    <span class="w-8 h-8 sm:w-9 sm:h-9 flex items-center justify-center text-sm sm:text-base font-bold uppercase bg-gray-100 border-2 border-gray-200 rounded-lg text-gray-700">
                                         {{ $letter }}
                                     </span>
                                 @endforeach
@@ -87,7 +87,9 @@
                     </div>
                     <h3 class="text-xl font-semibold text-gray-900 mb-2">No words found</h3>
                     <p class="text-gray-500 mb-4">Try a different search term or browse all words.</p>
-                    <a href="{{ url('/word-bank') }}" class="btn btn-secondary">View All Words</a>
+                    <a href="{{ url('/word-bank') }}" class="inline-flex items-center justify-center gap-2 px-6 py-3 bg-white text-gray-700 font-semibold rounded-xl border-2 border-gray-200 hover:border-gray-300 hover:bg-gray-50 transition-all">
+                        View All Words
+                    </a>
                 </div>
             @endif
 
@@ -106,4 +108,4 @@
     </section>
 
     <x-support-bubble />
-</x-layouts.guest>
+</div>
