@@ -189,7 +189,7 @@
                     </div>
 
                     <div class="px-6 py-4 bg-gray-50 border-t border-gray-100 text-center">
-                        <p class="text-sm text-gray-500">Win 3+ games to qualify!</p>
+                        <p class="text-sm text-gray-500">Win 1+ games to qualify!</p>
                     </div>
                 </div>
             </div>
