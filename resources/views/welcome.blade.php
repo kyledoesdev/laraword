@@ -21,11 +21,11 @@
 
                 <div class="flex flex-wrap gap-4 justify-center lg:justify-start mb-10">
                     @auth
-                        <a href="{{ url('/game') }}" class="btn btn-primary">
+                        <a href="{{ route('filament.app.auth.login') }}" class="btn btn-primary">
                             Play Today's Word →
                         </a>
                     @else
-                        <a href="{{ url('/game/register') }}" class="btn btn-primary">
+                        <a href="{{ route('filament.app.auth.register') }}" class="btn btn-primary">
                             Start Playing Free →
                         </a>
                         <a href="#how-to-play" class="btn btn-ghost">
@@ -173,7 +173,7 @@
         </div>
 
         <div class="max-w-3xl mx-auto grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <a href="{{ url('/leaderboards') }}" class="group flex items-center gap-4 bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 hover:border-[#FF2D20] hover:shadow-xl transition-all">
+            <a href="{{ route('leaderboards') }}" class="group flex items-center gap-4 bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 hover:border-[#FF2D20] hover:shadow-xl transition-all">
                 <div class="w-14 h-14 bg-gradient-to-br from-[#FF2D20] to-[#e6291c] rounded-xl flex items-center justify-center text-2xl">
                     🏆
                 </div>
@@ -183,7 +183,7 @@
                 </div>
             </a>
 
-            <a href="{{ url('/word-bank') }}" class="group flex items-center gap-4 bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 hover:border-[#FF2D20] hover:shadow-xl transition-all">
+            <a href="{{ route('word-bank') }}" class="group flex items-center gap-4 bg-gray-50 border-2 border-gray-200 rounded-2xl p-5 hover:border-[#FF2D20] hover:shadow-xl transition-all">
                 <div class="w-14 h-14 bg-gradient-to-br from-[#FF2D20] to-[#e6291c] rounded-xl flex items-center justify-center text-2xl">
                     📚
                 </div>
@@ -206,11 +206,11 @@
             </p>
 
             @auth
-                <a href="{{ url('/game') }}" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#FF2D20] font-bold rounded-xl hover:bg-gray-100 transition-all">
+                <a href="{{ route('filament.app.auth.login') }}" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#FF2D20] font-bold rounded-xl hover:bg-gray-100 transition-all">
                     Play Today's Word →
                 </a>
             @else
-                <a href="{{ url('/game/register') }}" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#FF2D20] font-bold rounded-xl hover:bg-gray-100 transition-all">
+                <a href="{{ route('filament.app.auth.register') }}" class="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-[#FF2D20] font-bold rounded-xl hover:bg-gray-100 transition-all">
                     Get Started Free →
                 </a>
             @endauth

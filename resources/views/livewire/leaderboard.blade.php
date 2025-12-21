@@ -199,9 +199,9 @@
                 <h2 class="text-2xl font-bold mb-2">Ready to compete?</h2>
                 <p class="text-white/80 mb-6">Play today's challenge and climb the leaderboards!</p>
                 @auth
-                    <a href="{{ url('/game') }}" class="btn btn-secondary">Play Now →</a>
+                    <a href="{{ route('filament.app.auth.login') }}" class="btn btn-secondary">Play Now →</a>
                 @else
-                    <a href="{{ url('/game/register') }}" class="btn btn-secondary">Start Playing Free →</a>
+                    <a href="{{ route('filament.app.auth.register') }}" class="btn btn-secondary">Start Playing Free →</a>
                 @endauth
             </div>
         </div>
