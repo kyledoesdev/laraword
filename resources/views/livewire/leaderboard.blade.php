@@ -48,8 +48,8 @@
 
                                 <!-- Avatar -->
                                 <div class="shrink-0">
-                                    @if($leader['user']->avatar)
-                                        <img src="{{ $leader['user']->avatar }}" alt="{{ $leader['user']->name }}" class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover border-2 border-gray-200">
+                                    @if($leader['user']->avatar_url)
+                                        <img src="{{ $leader['user']->avatar_url }}" alt="{{ $leader['user']->name }}" class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl object-cover border-2 border-gray-200">
                                     @else
                                         <div class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl bg-gradient-to-br from-[#FF2D20] to-[#e6291c] text-white flex items-center justify-center font-bold text-lg">
                                             {{ strtoupper(substr($leader['user']->name, 0, 1)) }}
