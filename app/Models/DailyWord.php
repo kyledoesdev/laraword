@@ -25,15 +25,10 @@ class DailyWord extends Model
     }
 
 
-    public static function getToday(): self
+    public static function getToday(): ?self
     {        
         return self::query()
             ->whereDate('date', today())
-            ->firstOr(function () {                
-                return self::create([
-                    'date' => today(),
-                    'word_id' => Word::getRandomTarget()->getKey(),
-                ]);
-            });
+            ->first();
     }
 }
