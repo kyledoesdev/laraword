@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Schedule;
 
 Schedule::command(SetDailyWord::class)
     ->timezone('America/New_York')
-    ->dailyAt('06:00')
+    ->monthly()
     ->onSuccess(function () {
         Log::channel('discord_status_updates')->info('Laraword word set successfully.');
     })
