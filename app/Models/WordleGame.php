@@ -54,7 +54,7 @@ class WordleGame extends Model
     {
         return self::firstOrCreate([
             'user_id' => $user->getKey(),
-            'daily_word_id' => DailyWord::getToday()->getKey(),
+            'daily_word_id' => DailyWord::getToday()?->getKey(),
         ], [
             'board_state' => self::createEmptyBoard(),
             'status' => GameStatus::ACTIVE->value,
