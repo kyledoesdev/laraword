@@ -10,61 +10,40 @@ use Illuminate\Support\Facades\Log;
 
 class SetDailyWord extends Command
 {
-    protected $signature = 'wordle:set-daily-word {--date= : The date to set (Y-m-d format)}';
-    protected $description = 'Set the daily Wordle word';
+    protected $signature = 'wordle:set-daily-word';
+    protected $description = 'Set daily Wordle words for the next 30 days';
 
     public function handle(): int
     {
-        $date = $this->resolveDate();
+        $startDate = Carbon::today();
 
-        if ($existing = $this->dailyWordForDate($date)) {
-            $this->info(
-                "Word already set for {$date->toDateString()}: {$existing->word->word}"
-            );
+        for ($i = 0; $i < 30; $i++) {
+            $date = $startDate->copy()->addDays($i);
 
-            return self::SUCCESS;
+            if (DailyWord::whereDate('date', $date)->exists()) {
+                continue;
+            }
+
+            $word = Word::where('is_target', true)->inRandomOrder()->first();
+
+            if (!$word) {
+                Log::warning('All words used for daily games, resetting pool.');
+                Word::query()->update(['is_target' => true]);
+                $word = Word::where('is_target', true)->inRandomOrder()->first();
+            }
+
+            DailyWord::create([
+                'date' => $date,
+                'word_id' => $word->getKey(),
+            ]);
+
+            $word->update(['is_target' => false]);
+
+            $this->info("{$date->toDateString()}: {$word->word}");
         }
 
-        $word = $this->resolveDailyWord();
-
-        DailyWord::create([
-            'date'    => $date,
-            'word_id' => $word->getKey(),
-        ]);
-
-        $this->info(
-            "Daily word set for {$date->toDateString()}: {$word->word}"
-        );
+        $this->info('Done!');
 
         return self::SUCCESS;
-    }
-
-    private function resolveDate(): Carbon
-    {
-        return $this->option('date')
-            ? Carbon::parse($this->option('date'))
-            : Carbon::today();
-    }
-
-    private function dailyWordForDate(Carbon $date): ?DailyWord
-    {
-        return DailyWord::whereDate('date', $date)->first();
-    }
-
-    private function resolveDailyWord(): Word
-    {
-        $word = Word::getRandomTarget();
-
-        if (! $word) {
-            Log::warning('All words have had a daily game, resetting all words.');
-
-            Word::query()->update(['is_target' => true]);
-
-            $word = Word::getRandomTarget();
-        }
-
-        $word->update(['is_target' => false]);
-
-        return $word;
     }
 }
