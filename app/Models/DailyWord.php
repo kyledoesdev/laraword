@@ -28,7 +28,7 @@ class DailyWord extends Model
     public static function getToday(): ?self
     {        
         return self::query()
-            ->whereDate('date', today())
+            ->whereDate('date', today()->inUserTimezone())
             ->first();
     }
 }
