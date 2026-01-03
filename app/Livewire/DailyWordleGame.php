@@ -28,7 +28,7 @@ class DailyWordleGame extends Component
 
         $this->message = match($this->game?->status) {
             GameStatus::WON->value => 'You already won today! 🎉',
-            GameStatus::LOST->value => "You lost today. The word was: {$this->game->dailyWord->word}",
+            GameStatus::LOST->value => "You lost today. The word was: {$this->theWord()}",
             default => ''
         };
     }
