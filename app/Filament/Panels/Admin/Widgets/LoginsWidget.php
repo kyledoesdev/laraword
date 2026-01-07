@@ -2,9 +2,9 @@
 
 namespace App\Filament\Panels\Admin\Widgets;
 
-use Filament\Widgets\StatsOverviewWidget\Stat;
 use Filament\Widgets\StatsOverviewWidget;
-use App\Stats\LoginStat;
+use Filament\Widgets\StatsOverviewWidget\Stat;
+use Kyledoesdev\Essentials\Stats\LoginStat;
 
 class LoginsWidget extends StatsOverviewWidget
 {
