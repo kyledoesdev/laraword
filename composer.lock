@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fe73b4bf2b16bdcdd302cbb01c9190f2",
+    "content-hash": "9d6c833b8f77b0b8cd11d7b3f4b28ea9",
     "packages": [
         {
             "name": "anourvalar/eloquent-serialize",
@@ -2476,16 +2476,16 @@
         },
         {
             "name": "kyledoesdev/essentials",
-            "version": "v0.0.2",
+            "version": "v0.0.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/kyledoesdev/essentials.git",
-                "reference": "a674ec200bc90ef66253e5fe4aa934674816b5ac"
+                "reference": "0007275662cb9e11af0766d74a9cc14839a0fb9b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/kyledoesdev/essentials/zipball/a674ec200bc90ef66253e5fe4aa934674816b5ac",
-                "reference": "a674ec200bc90ef66253e5fe4aa934674816b5ac",
+                "url": "https://api.github.com/repos/kyledoesdev/essentials/zipball/0007275662cb9e11af0766d74a9cc14839a0fb9b",
+                "reference": "0007275662cb9e11af0766d74a9cc14839a0fb9b",
                 "shasum": ""
             },
             "require": {
@@ -2493,7 +2493,8 @@
                 "illuminate/http": "^12.0",
                 "illuminate/support": "^12.0",
                 "php": "^8.4",
-                "spatie/laravel-package-tools": "^1.16"
+                "spatie/laravel-package-tools": "^1.16",
+                "spatie/laravel-stats": "^2.3"
             },
             "require-dev": {
                 "laravel/pint": "^1.14",
@@ -2543,9 +2544,9 @@
             ],
             "support": {
                 "issues": "https://github.com/kyledoesdev/essentials/issues",
-                "source": "https://github.com/kyledoesdev/essentials/tree/v0.0.2"
+                "source": "https://github.com/kyledoesdev/essentials/tree/v0.0.4"
             },
-            "time": "2025-09-11T02:50:10+00:00"
+            "time": "2026-01-07T00:10:44+00:00"
         },
         {
             "name": "laravel/framework",

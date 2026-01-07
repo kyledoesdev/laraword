@@ -31,15 +31,6 @@ class AppServiceProvider extends ServiceProvider
         Model::automaticallyEagerLoadRelationships();
 
         Vite::useAggressivePrefetching();
-
-        $this->bootMacros();
-    }
-
-    private function bootMacros(): void
-    {
-        Carbon::macro('inUserTimezone', function () {
-            return $this->tz(auth()->user()?->timezone ?? 'America/New_York');
-        });
     }
 
     private function configureFilament(): void

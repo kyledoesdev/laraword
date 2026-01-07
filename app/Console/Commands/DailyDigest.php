@@ -4,10 +4,10 @@ namespace App\Console\Commands;
 
 use App\Models\User;
 use App\Models\WordleGame;
-use App\Stats\LoginStat;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
+use Kyledoesdev\Essentials\Stats\LoginStat;
 
 class DailyDigest extends Command
 {

@@ -1,9 +1,9 @@
 <?php
 
-use App\Http\Middleware\System\IsDeveloper;
 use App\Livewire\Leaderboard;
 use App\Livewire\WordBank;
 use Illuminate\Support\Facades\Route;
+use Kyledoesdev\Essentials\Middleware\IsDeveloper;
 
 // Landing Page
 Route::view('/', 'welcome')->name('welcome');
