@@ -2,10 +2,10 @@
 
 namespace App\Listeners;
 
-use App\Stats\LoginStat;
 use Illuminate\Auth\Events\Login;
-use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Queue\InteractsWithQueue;
+use Kyledoesdev\Essentials\Stats\LoginStat;
 
 class HandleUserLogin
 {

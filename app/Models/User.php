@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use App\Concerns\StatsAfterEvents;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasAvatar;
 use Filament\Panel;
@@ -13,13 +12,14 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
+use Kyledoesdev\Essentials\Concerns\HasStatsAfterEvents;
 
 class User extends Authenticatable implements FilamentUser, HasAvatar, MustVerifyEmail
 {
     use HasFactory;
+    use HasStatsAfterEvents;
     use Notifiable;
     use SoftDeletes;
-    use StatsAfterEvents;
 
     protected $fillable = [
         'name',
